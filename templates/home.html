@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Comidaria</title>
+        <link rel="stylesheet" type="text/css" href="../static/home.css">
+    </head>
+<body>
+    <header>
+        <h1>Comidaria</h1>
+    </header>
+    <div class="container">
+        <div class="header-buttons">
+            <button id="post-recipe-btn" >
+                <a href="{{ url_for('post_receita') }}" class="button-link">Postar Nova Receita</a>
+            </button>
+            <a href="#" id="logout" class="button-link">Sair da conta</a>
+        </div>
+
+        
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flash">
+                        {% for message in messages %}
+                            {% set message_type = 'flash-success' %}  {# Default to success, change dynamically based on your flash message category #}
+                            {% if 'error' in message %}
+                                {% set message_type = 'flash-error' %}
+                            {% elif 'warning' in message %}
+                                {% set message_type = 'flash-warning' %}
+                            {% elif 'info' in message %}
+                                {% set message_type = 'flash-info' %}
+                            {% endif %}
+                            <li class="{{ message_type }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="my-recipes">
+            <h2>Minhas Receitas</h2>
+            <ul id="my-recipes-list">
+                {% for user_receita in receita %}
+                    <li>
+                        <a href="{{ url_for('view_recipe', post_id=user_receita[4]) }}">{{ user_receita[1] }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+            
+        <div class="popular-recipes">
+            <h2>Receitas dos Outros Usuários</h2>
+            <ul id="popular-recipes-list">
+                {% for receita in outro_user_receita %}
+                    <li><a href="{{ url_for('view_recipe', post_id=receita[4]) }}">{{ receita[1] }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script src="/static/login.js" type="module"></script>
+</body>
+</html>
